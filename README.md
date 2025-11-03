@@ -14,11 +14,11 @@
 ## Pattern Examples (location does not matter)
 
 Rainbow:
-<video src="https://github.com/user-attachments/assets/0f6e10a9-0110-4c18-8e69-efe2349c4bbb" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/0f6e10a9-0110-4c18-8e69-efe2349c4bbb" controls height="300"></video>
 
 <br/>
 Rainbow Theater Chase:
-<video src="https://github.com/user-attachments/assets/7815d67a-6773-413e-9849-2f68e6898052" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/7815d67a-6773-413e-9849-2f68e6898052" controls height="300"></video>
 
 
 
