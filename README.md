@@ -12,8 +12,20 @@
 
 
 ## Pattern Examples (location does not matter)
-[Rainbow](https://github.com/user-attachments/assets/578bb163-61c6-4d5f-8d16-224f221949c9) <br>
-[Theater Chase](https://github.com/user-attachments/assets/ca142c44-a228-4954-a82e-b06df4ad2b61)
+
+Rainbow:
+
+
+https://github.com/user-attachments/assets/0f6e10a9-0110-4c18-8e69-efe2349c4bbb
+
+
+<br/>
+Rainbow Theater Chase:
+
+
+https://github.com/user-attachments/assets/7815d67a-6773-413e-9849-2f68e6898052
+
+
 
 
 ## Pattern Examples (2D)
