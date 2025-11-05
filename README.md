@@ -1,5 +1,6 @@
 # Christmas Tree Project
 
+The goal of this project is to have more complex LED patterns on a Christmas tree. I used an Arduino Uno and a custom-designed and built PCB to interface between the Uno and the Neopixel lights. The PCB allows the whole system to run off a 5V 10A power supply. The Python vision script maps the coordinates of the LEDs into a mapped range of -1 to 1 in the x/y, with the z scaled proportionally to them. The tree is scanned in 4 different directions, giving 3D coordinates for each LED. These coordinates are translated and manipulated to create different patterns.
 
 
 ## PCB Design in KiCad:
