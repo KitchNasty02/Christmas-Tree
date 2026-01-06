@@ -11,6 +11,8 @@ The goal of this project is to have more complex LED patterns on a Christmas tre
   <img height="250" alt="IMG_3037" src="https://github.com/user-attachments/assets/dad54a37-7cbf-4fad-90f8-d50af33efe3c" />
 </div>
 
+Add 3D plot picture
+
 
 ## Pattern Examples
 
