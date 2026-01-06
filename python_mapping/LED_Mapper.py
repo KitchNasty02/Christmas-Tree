@@ -4,11 +4,14 @@ import json
 
 class LED_Mapper:
 
-    MISSING_POS_PLACEHOLDER = np.array([-999.0, -999.0])
+    MISSING_2D = (-999.0, -999.0)
+    MISSING_3D = (-999.0, -999.0, -999.0)
+
 
     def __init__(self):
         self.mapping_data = None
         self.final_avg_pos = None
+        self.all_view_pos = []      # holds a final_avg_pos for each view
         self.num_leds = 0
         self.max_tests = 0
 
@@ -16,6 +19,11 @@ class LED_Mapper:
         self.box_width = 0
         self.x_center = 0
         self.y_base = 0
+
+
+    def init_mapping(self):
+        self.mapping_data = {i: [] for i in range(self.num_leds)}
+
 
     # sets the bounding box for the tree
     def set_bounding_box(self, box_coords):
@@ -67,34 +75,46 @@ class LED_Mapper:
 
     # maps pixels to coordinates -1 to 1 range and stores them
     def save_led_pos(self, led_pos, led, led_state, test_num):
+        if led < 0 or led > self.num_leds:
+            print(f"LED {led} out of range")
+            return
+        
+        if led_pos is None:
+            print(f"[WARNING] No position detected for LED {led}, skipping save")
+            return
         
         if self.mapping_data is None:
-            self.mapping_data = {i: [] for i in range(self.num_leds)}
+            self.init_mapping()
         
-        if led in self.mapping_data and led_pos:
-            x_norm, z_norm = self._normalize_coords(led_pos)
+        x_norm, z_norm = self._normalize_coords(led_pos)
+        
+        if led in self.mapping_data:
             self.mapping_data[led].append((x_norm, z_norm))
-            print(f"Stored pos ({x_norm}, {z_norm}) for led {led}")
+        else:
+            self.mapping_data[led] = [(x_norm, z_norm)]
+    
+        print(f"Stored pos ({x_norm}, {z_norm}) for led {led}")
 
 
     # calc average position for each led
-    def get_avg_pos_array(self):
+    def set_avg_pos_array(self):
         avg = {}
-        for led in range(self.num_leds):
-            if led in self.mapping_data and self.mapping_data[led]:
-                positions = np.array(self.mapping_data[led])
+        for led in sorted(self.mapping_data.keys()):
+            positions = np.array(self.mapping_data[led])
+
+            if positions.size > 0:
                 avg[led] = np.mean(positions.astype(float), axis=0)
             else:  
                 print(f"No positions found for LED {led}")
-                avg[led] = self.MISSING_POS_PLACEHOLDER
+                avg[led] = self.MISSING_2D
 
         self.final_avg_pos = avg
-        return self.final_avg_pos
+        self.all_view_pos.append(self.final_avg_pos)
     
 
 
     # saves avg pos data as cpp header file for arduino
-    def save_2d_avg_pos_to_cpp_header(self, filename=r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\Led Mapping (Arduino)\include\led_positions.h"):    #MAKE PATH INTO ARDUINO FILE??
+    def save_2d_avg_pos_to_cpp_header(self, filename=r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\arduino_platformio\include\led_positions.h"):    #MAKE PATH INTO ARDUINO FILE??
         if self.final_avg_pos is None:
             print("No final positions to save")
             return
@@ -118,6 +138,87 @@ class LED_Mapper:
             
             f.write("};\n\n")
             f.write("#endif // LED_POSITIONS_H\n")
+
+        print(f"Saved final positions to {filename}")
+
+
+    
+    def compute_3d_positions(self):
+        if len(self.all_view_pos) != 4:
+            print("[Error] need 4 views to compute 3D positions")
+            return None
+        
+        front, right, back, left = self.all_view_pos
+        positions_3d = {}
+
+        for led in range(self.num_leds):
+            xs = []
+            ys = []
+            zs = []
+
+            # front view (x)
+            if led in front:
+                x, z = front[led]
+                if x != -999.0:
+                    xs.append(x)
+                    zs.append(z)
+
+            # back view (invert x)
+            if led in back:
+                x, z = back[led]
+                if x != -999.0:
+                    xs.append(-x)
+                    zs.append(z)
+
+            # right view (y)
+            if led in right:
+                x, z = right[led]
+                if x != -999.0:
+                    ys.append(x)
+                    zs.append(z)
+
+            # left view (invert y)
+            if led in left:
+                x, z = left[led]
+                if x != -999.0:
+                    ys.append(-x)
+                    zs.append(z)
+                    
+            if xs and ys and zs:
+                positions_3d[led] = (
+                    float(np.mean(xs)),
+                    float(np.mean(ys)),
+                    float(np.mean(zs))
+                )
+            else:
+                positions_3d[led] = self.MISSING_3D
+
+        return positions_3d
+
+
+
+    # saves avg pos data as cpp header file for arduino
+    def save_3d_avg_pos_to_cpp_header(self, filename=r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\arduino_platformio\include\led_positions_3D.h"):
+        
+        positions_3d = self.compute_3d_positions()
+        
+        if positions_3d is None:
+            return
+        
+        with open(filename, 'w') as f:
+            f.write("#ifndef LED_POSITIONS_3D_H\n")
+            f.write("#define LED_POSITIONS_3D_H\n\n")
+            
+            f.write("struct Position3D { float x, y, z; };\n\n")
+            f.write(f"const int NUM_LEDS = {self.num_leds};\n")
+            f.write("const Position3D ledPositions[NUM_LEDS] = {\n")
+            
+            for led in range(self.num_leds):
+                x, y, z = positions_3d[led]
+                f.write(f"  {{ {x:.6f}f, {y:.6f}f, {z:.6f}f }},\n")
+            
+            f.write("};\n\n")
+            f.write("#endif // LED_POSITIONS_3D_H\n")
 
         print(f"Saved final positions to {filename}")
 

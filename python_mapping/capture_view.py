@@ -1,17 +1,15 @@
 
 from SerialManager import SerialManager
 from CameraManager import CameraManager
-from LED_Mapper import LED_Mapper
 
 import cv2
+import time
 
-
-
-def main():
+def capture(led_mapper):
 
     # initialize managers
-    led_mapper = LED_Mapper()
     camera_manager = CameraManager()
+    serial_manager = SerialManager(baud_rate=9600)
 
     box_coords = camera_manager.draw_and_set_bounding_box()
     if box_coords is None:
@@ -20,12 +18,14 @@ def main():
         return
     
     led_mapper.set_bounding_box(box_coords)
-    
-    serial_manager = SerialManager(baud_rate=9600)
+
+    led_mapper.init_mapping()
+
     is_connected = serial_manager.connect()
     if not is_connected:
         print("Could not connect to serial, continuing without")
-
+    else:
+        serial_manager.flush()
 
     # hold new data from the queue until led detection
     serial_buffer = []
@@ -53,10 +53,20 @@ def main():
 
             try:
                 # split line into individual parts
-                led, led_mapper.num_leds, led_state, test_num, led_mapper.max_tests = [int(x) for x in buffer_data.split('-')]
+                led, num_leds, led_state, test_num, max_tests = [int(x) for x in buffer_data.split('-')]
+
+                if led_mapper.num_leds == 0:
+                    led_mapper.num_leds = num_leds
+                    led_mapper.max_tests = max_tests
+
                 
                 # calculate led position when the data is recieved
                 led_mapper.save_led_pos(current_led_pos, led, led_state, test_num)
+
+                if (led == num_leds and test_num == max_tests):
+                    print("Mapped all leds, moving on to next view...")
+                    break
+
             except ValueError:
                 print(f"Failed to parse serial data: {buffer_data}")
 
@@ -70,17 +80,11 @@ def main():
             break
 
     
-    avg = led_mapper.get_avg_pos_array()
-    print(f"Final avg pos: {avg}")
-
-    led_mapper.save_2d_avg_pos_to_cpp_header()
+    led_mapper.set_avg_pos_array()
+    print(f"Avg pos appended for this view")
 
     camera_manager.release()
     if is_connected:
         serial_manager.close()
 
 
-
-
-if __name__ == '__main__':
-    main()

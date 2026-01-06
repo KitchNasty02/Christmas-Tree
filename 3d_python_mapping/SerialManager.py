@@ -65,18 +65,8 @@ class SerialManager:
             self.thread.join(timeout=1)
         print("Serial mananger shut down")
 
-
-    def flush(self):
-        if self.ser and self.ser.is_open:
-            self.ser.reset_input_buffer()
-
             
         
-
-
-
-
-
 
 
 

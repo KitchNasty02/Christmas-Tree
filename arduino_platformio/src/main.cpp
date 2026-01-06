@@ -1,10 +1,10 @@
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
 #include <FastLED.h>
 
 #include "examples.h"
 #include "light_mapping.h"
 #include "patterns.h"
+#include "particle.h"
 
 #define LED_PIN 6
 #define NUM_TESTS 3
@@ -13,9 +13,9 @@
 #define LED_TYPE WS2811
 #define COLOR_ORDER GRB
 
+
 CRGB leds[LED_COUNT];
 
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
 
@@ -29,8 +29,12 @@ void setup() {
   // ----- PATTERNS ----- //
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, LED_COUNT);
   FastLED.setBrightness(BRIGHTNESS);
+  FastLED.clear();
+  FastLED.show();
 
-  run_vertical_line_pattern_setup(0);
+  // run_vertical_line_pattern_setup(0);
+
+  run_particle_setup();
   
 }
 
@@ -40,16 +44,22 @@ void loop() {
   // 3 tests per LED (will take average position)
   // 2 sec wait between tests
   // 5 sec wait before next LED
-  // light_mapping(3, 2000, 5000); // could lower the numbers for time sake
+  // light_mapping(1, 100, 100); // could lower the numbers for time sake
 
-  //light_mapping(NUM_TESTS, 250, 250);
+  // light_mapping(3, 250, 250);
 
-  rainbow(20);
+  // rainbow(20);
   //theaterChaseRainbow(200);
 
   // ----- PATTERNS ----- //
-  //run_vertical_line_pattern();
+  // run_vertical_line_pattern();
 
+  // run_circular_pattern();
+  // FastLED.show();
+
+
+  run_particle();
+  FastLED.show();
   
 
 }
