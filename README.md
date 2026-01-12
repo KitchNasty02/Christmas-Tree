@@ -9,9 +9,8 @@ The goal of this project is to have more complex LED patterns on a Christmas tre
   <img height="250" alt="PCB" src="https://github.com/user-attachments/assets/2a295851-252e-4809-bc63-9d9f43c390c6" />
   <img height="250" alt="3D_view_pcb" src="https://github.com/user-attachments/assets/1917db8c-b034-4167-b316-ffcf00c8510c" />
   <img height="250" alt="IMG_3037" src="https://github.com/user-attachments/assets/dad54a37-7cbf-4fad-90f8-d50af33efe3c" />
+  <img width="250" alt="3D_pos" src="https://github.com/user-attachments/assets/9ed27b71-719b-4b75-97db-7c2e7adc8f6e" />
 </div>
-
-Add 3D plot picture
 
 
 ## Pattern Examples
