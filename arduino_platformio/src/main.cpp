@@ -5,6 +5,7 @@
 #include "light_mapping.h"
 #include "patterns.h"
 #include "particle.h"
+#include "trail.h"
 
 #define LED_PIN 6
 #define NUM_TESTS 3
@@ -35,6 +36,8 @@ void setup() {
   // run_vertical_line_pattern_setup(0);
 
   run_particle_setup();
+
+  // run_trail_setup();
   
 }
 
@@ -52,13 +55,16 @@ void loop() {
   //theaterChaseRainbow(200);
 
   // ----- PATTERNS ----- //
-  // run_vertical_line_pattern();
+  run_vertical_line_pattern();
 
   // run_circular_pattern();
   // FastLED.show();
 
 
   run_particle();
+
+  //  run_trail();
+
   FastLED.show();
   
 
