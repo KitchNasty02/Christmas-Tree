@@ -16,6 +16,9 @@ Add 3D plot picture
 
 ## Pattern Examples
 
+Moving Line:
+<video src="https://github.com/user-attachments/assets/ea744c5a-cbf0-495f-a79b-a7f85b9c7ecf" controls height="300"></video>
+
 Rainbow:
 <video src="https://github.com/user-attachments/assets/0f6e10a9-0110-4c18-8e69-efe2349c4bbb" controls height="300"></video>
 
@@ -25,6 +28,10 @@ Rainbow Theater Chase:
 
 <br/>
 Particle:
-add particle video here
+<video src="https://github.com/user-attachments/assets/dcfbc5fe-d3d1-4078-b11b-f029433ab765" controls height="300"></video>
+
+<br/>
+Trail:
+<video src="https://github.com/user-attachments/assets/26deb48c-3179-42a1-84bb-daaf8ee08d46" controls height="300"></video>
 
 
