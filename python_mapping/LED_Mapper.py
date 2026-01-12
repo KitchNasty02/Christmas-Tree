@@ -114,7 +114,7 @@ class LED_Mapper:
 
 
     # saves avg pos data as cpp header file for arduino
-    def save_2d_avg_pos_to_cpp_header(self, filename=r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\arduino_platformio\include\led_positions.h"):    #MAKE PATH INTO ARDUINO FILE??
+    def save_2d_avg_pos_to_cpp_header(self, filename=r"arduino_platformio\include\led_positions.h"):    #MAKE PATH INTO ARDUINO FILE??
         if self.final_avg_pos is None:
             print("No final positions to save")
             return
@@ -198,7 +198,7 @@ class LED_Mapper:
 
 
     # saves avg pos data as cpp header file for arduino
-    def save_3d_avg_pos_to_cpp_header(self, filename=r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\arduino_platformio\include\led_positions_3D.h"):
+    def save_3d_avg_pos_to_cpp_header(self, filename=r"arduino_platformio\include\led_positions_3D.h"):
         
         positions_3d = self.compute_3d_positions()
         

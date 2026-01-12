@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # --- Step 1: Load your 3D positions --- #
-filename = r"C:\Users\conno\OneDrive\Desktop\Projects\Christmas Tree\arduino_platformio\include\led_positions_3D.h"
+filename = r"arduino_platformio\include\led_positions_3D.h"
 
 positions = []
 
